@@ -1,0 +1,47 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: odoo18_postgres
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odoo
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres-data:/var/lib/postgresql/data/pgdata
+    ports:
+      - "127.0.0.1:5432:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U odoo"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  odoo18:
+    image: odoo:18.0
+    container_name: odoo18_app
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8069:8069"
+      - "127.0.0.1:8072:8072"  # Port untuk longpolling/evented websocket
+    volumes:
+      - odoo-data:/var/lib/odoo
+      - ./config:/etc/odoo
+      - ./addons:/mnt/extra-addons
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=odoo
+    restart: unless-stopped
+    # Uncomment baris command di bawah HANYA untuk first-time database setup
+    # Setelah database dibuat, comment kembali dan restart: docker compose restart odoo18
+    # command: odoo -d odoo_db -i base --db_host=db --db_user=odoo --db_password=odoo --stop-after-init
+
+volumes:
+  odoo-data:
+    name: odoo18_data
+  postgres-data:
+    name: odoo18_postgres_data

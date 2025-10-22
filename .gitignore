@@ -1,0 +1,72 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Odoo
+*.pyc
+*.pyo
+.installed.cfg
+bin
+develop-eggs
+dist
+downloads
+eggs
+.eggs
+parts
+sdist
+var
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Log files
+*.log
+logs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Docker override (local development only)
+docker-compose.override.yaml
+
+# Backup files
+*.sql
+*.sql.gz
+*.tar.gz
+backup/
+backups/
+*.bak
+*.backup
+README.old.md
+
+# Docker volumes (data directories)
+# Keep docker-compose.yaml but ignore data
+# postgres-data/
+# odoo-data/
+
+# OS
+Thumbs.db
+.DS_Store
+._*
+
+# Test
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Odoo specific
+filestore/
+sessions/
+*.pot
+*.mo
